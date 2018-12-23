@@ -9,6 +9,11 @@ using ProjectManageStudent.Models;
 
 namespace ProjectManageStudent.Controllers
 {
+    using System.Net;
+
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http.Extensions;
+
     public class AccountsController : Controller
     {
         private readonly ProjectManageStudentContext _context;
@@ -18,23 +23,85 @@ namespace ProjectManageStudent.Controllers
             _context = context;
         }
 
+        public bool checkSession()
+        {
+            var ck = false;
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
+            var account = this._context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (currentLogin == null || account.checkRoleST())
+            {
+                ck = true;
+            }
+
+            return (ck);
+        }
         // GET: Accounts
         public async Task<IActionResult> Index()
         {
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
+            if (currentLogin == null)
+            {
+                return Redirect("/authentication/login");
+            }
+            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (accounts == null || accounts.checkRoleST())
+            {
+                Response.StatusCode = 403;
+                
+            }
             var projectManageStudentContext = _context.Account.Include(a => a.Classroom);
             return View(await projectManageStudentContext.ToListAsync());
         }
 
+        public async Task<IActionResult> AddMark(int? id)
+        {
+            if (this.checkSession())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            ViewData["Subject"] = new SelectList(_context.Subject, "Id", "Name");
+            return View(account);
+
+        }
+        public async Task<IActionResult> AddMark2(Mark mark )
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(mark);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View();
+        }
         // GET: Accounts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            
+            if (this.checkSession())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
+                if (id == null)
             {
                 return NotFound();
             }
 
             var account = await _context.Account
                 .Include(a => a.Classroom)
+                .Include(m=>m.Marks).ThenInclude(s=>s.Subject)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
@@ -47,8 +114,15 @@ namespace ProjectManageStudent.Controllers
         // GET: Accounts/Create
         public IActionResult Create()
         {
-            ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Id");
-            return View();
+           
+            if (this.checkSession())
+            {
+                ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Name");
+                return View();
+               
+            }
+            Response.StatusCode = 403;
+            return Redirect("/Authentication/Login");
         }
 
         // POST: Accounts/Create
@@ -56,10 +130,13 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Phone,Address,BirthDay,CreateAt,UpdateAt,Status")] Account account)
+        public async Task<IActionResult> Create([Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Phone,Address,BirthDay,ConfirmPassword,Role")] Account account)
         {
             if (ModelState.IsValid)
             {
+                account.Salt = PasswordHandle.PasswordHandle.GetInstance().GenerateSalt();
+                account.Password = PasswordHandle.PasswordHandle.GetInstance()
+                    .EncryptPassword(account.Password, account.Salt);
                 _context.Add(account);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -71,6 +148,12 @@ namespace ProjectManageStudent.Controllers
         // GET: Accounts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+           
+            if (this.checkSession())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -81,7 +164,7 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Id", account.ClassroomId);
+            ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Name", account.ClassroomId);
             return View(account);
         }
 
@@ -90,7 +173,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Phone,Address,BirthDay,CreateAt,UpdateAt,Status")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Phone,Address,BirthDay,ConfirmPassword,Role")] Account account)
         {
             if (id != account.Id)
             {
@@ -101,6 +184,9 @@ namespace ProjectManageStudent.Controllers
             {
                 try
                 {
+                    account.Salt = PasswordHandle.PasswordHandle.GetInstance().GenerateSalt();
+                    account.Password = PasswordHandle.PasswordHandle.GetInstance()
+                        .EncryptPassword(account.Password, account.Salt);
                     _context.Update(account);
                     await _context.SaveChangesAsync();
                 }
@@ -124,6 +210,11 @@ namespace ProjectManageStudent.Controllers
         // GET: Accounts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (this.checkSession())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
             if (id == null)
             {
                 return NotFound();

@@ -1,21 +1,16 @@
 ﻿@model ProjectManageStudent.Models.Classroom
 
 @{
-    ViewData["Title"] = "Details";
+   
 }
 
-<h2>Details</h2>
+<h2>@Model.Name</h2>
 
 <div>
-    <h4>Classroom</h4>
-    <hr />
+    
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+       
+       
         <dt>
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
@@ -28,6 +23,30 @@
         <dd>
             @Html.DisplayFor(model => model.UpdatedAt)
         </dd>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var st in Model.Accounts)
+                {
+                    <tr>
+
+                    <td><a asp-action="../Accounts/Details" asp-route-id="@st.Id"> @st.Email</a></td>
+                    <td>@st.FirstName</td>
+                    <td>@st.LastName</td>
+                    <td>@st.Address</td>
+                    <td>@st.Phone</td>
+                </tr>
+        }
+            </tbody>
+        </table>
     </dl>
 </div>
 <div>

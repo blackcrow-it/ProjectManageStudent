@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManageStudent.Models;
 
 namespace ProjectManageStudent.Migrations
 {
     [DbContext(typeof(ProjectManageStudentContext))]
-    partial class ProjectManageStudentContextModelSnapshot : ModelSnapshot
+    [Migration("20181223034611_initDatabase2")]
+    partial class initDatabase2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,8 +44,6 @@ namespace ProjectManageStudent.Migrations
                     b.Property<string>("Password");
 
                     b.Property<string>("Phone");
-
-                    b.Property<int>("Role");
 
                     b.Property<string>("Salt");
 

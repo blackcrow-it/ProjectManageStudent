@@ -8,6 +8,8 @@ using ProjectManageStudent.Models;
 
 namespace ProjectManageStudent.Controllers
 {
+    using Microsoft.AspNetCore.Http;
+
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -17,7 +19,8 @@ namespace ProjectManageStudent.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Email"] = HttpContext.Session.GetString("currentLogin");
+            ViewData["Message"] = "Bạn đã đăng nhập với tư cách:" + HttpContext.Session.GetString("currentLoginRole");
 
             return View();
         }

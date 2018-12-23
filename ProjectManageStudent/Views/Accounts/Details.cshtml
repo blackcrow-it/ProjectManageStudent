@@ -4,24 +4,12 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2> @Html.DisplayFor(model => model.Email)</h2>
 
 <div>
-    <h4>Account</h4>
-    <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
+
+
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -59,12 +47,6 @@
             @Html.DisplayFor(model => model.CreateAt)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UpdateAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdateAt)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd>
@@ -74,10 +56,40 @@
             @Html.DisplayNameFor(model => model.Classroom)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Classroom.Id)
+            <a asp-action="../Classrooms/Details" asp-route-id="@Model.ClassroomId">@Html.DisplayFor(modelItem => Model.Classroom.Name)</a>
         </dd>
     </dl>
 </div>
+<table class = "table">
+      
+    
+      
+    <thead>
+        <tr>
+            <th></th>
+            <th>Practive</th>
+            <th>Theory Date</th>
+            <th>Assignment</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+      
+    <tbody>
+    @foreach(var ma in Model.Marks) {
+        <tr>
+            <th>@ma.Subject.Name</th>
+            <td>@ma.Practice</td>
+            <td>@ma.Theory</td>
+            <td>@ma.Assignment</td>
+            <td>@ma.Status</td>
+            <td><a asp-action="../Marks/Edit" asp-route-id="@ma.Id">Edit</a></td>
+        </tr>
+    }
+
+    </tbody>
+      
+</table>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

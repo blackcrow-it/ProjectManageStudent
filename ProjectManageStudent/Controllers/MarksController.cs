@@ -48,8 +48,8 @@ namespace ProjectManageStudent.Controllers
         // GET: Marks/Create
         public IActionResult Create()
         {
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id");
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name");
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name");
             return View();
         }
 
@@ -66,8 +66,8 @@ namespace ProjectManageStudent.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id", mark.AccountId);
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id", mark.SubjectId);
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name", mark.AccountId);
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name", mark.SubjectId);
             return View(mark);
         }
 
@@ -84,8 +84,8 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id", mark.AccountId);
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id", mark.SubjectId);
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name", mark.AccountId);
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name", mark.SubjectId);
             return View(mark);
         }
 
@@ -94,7 +94,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AccountId,SubjectId,Theory,Practice,Assignment,Status,CreatedAt,UpdateAt")] Mark mark)
+        public async Task<IActionResult> Edit(int id, [Bind("SubjectId,Theory,Practice,Assignment")] Mark mark)
         {
             if (id != mark.Id)
             {
@@ -121,8 +121,8 @@ namespace ProjectManageStudent.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id", mark.AccountId);
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id", mark.SubjectId);
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name", mark.AccountId);
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name", mark.SubjectId);
             return View(mark);
         }
 
