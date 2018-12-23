@@ -9,6 +9,8 @@ using ProjectManageStudent.Models;
 
 namespace ProjectManageStudent.Controllers
 {
+    using Microsoft.AspNetCore.Http;
+
     public class ClassroomsController : Controller
     {
         private readonly ProjectManageStudentContext _context;
@@ -21,6 +23,14 @@ namespace ProjectManageStudent.Controllers
         // GET: Classrooms
         public async Task<IActionResult> Index()
         {
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
+
+            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (accounts == null || accounts.checkRoleST())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
             return View(await _context.Classroom.ToListAsync());
         }
 
@@ -31,8 +41,15 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
 
-            var classroom = await _context.Classroom
+            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (accounts == null || accounts.checkRoleST())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
+            var classroom = await _context.Classroom.Include(s=>s.Accounts)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (classroom == null)
             {
@@ -45,6 +62,14 @@ namespace ProjectManageStudent.Controllers
         // GET: Classrooms/Create
         public IActionResult Create()
         {
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
+
+            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (accounts == null || accounts.checkRoleST())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
             return View();
         }
 
@@ -71,7 +96,14 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
 
+            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (accounts == null || accounts.checkRoleST())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
             var classroom = await _context.Classroom.FindAsync(id);
             if (classroom == null)
             {
@@ -122,7 +154,14 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
+            string currentLogin = HttpContext.Session.GetString("currentLogin");
 
+            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
+            if (accounts == null || accounts.checkRoleST())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login");
+            }
             var classroom = await _context.Classroom
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (classroom == null)

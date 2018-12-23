@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProjectManageStudent.Models
 {
-    public class Classroom
+    using System.Collections;
+
+    public class Classroom 
     {
         public Classroom()
         {
@@ -17,5 +19,7 @@ namespace ProjectManageStudent.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public List<Account> Accounts { get; set; }
+
+       
     }
 }

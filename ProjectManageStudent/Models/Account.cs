@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjectManageStudent.Models
 {
-    public class Account
+    using System.Collections;
+
+    public class Account 
     {
         public Account()
         {
@@ -22,21 +24,41 @@ namespace ProjectManageStudent.Models
         [NotMapped]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+        public string Salt { get; set; }
         public string FirstName { get; set; }
+        public Role Role { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
         public DateTime BirthDay { get; set; }
+
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public AccountStatus Status { get; set; }
         public List<Mark> Marks { get; set; }
         [ForeignKey("ClassroomId")]
         public Classroom Classroom { get; set; }
+
+        public bool checkRole()
+        {
+            return (this.Role == Role.Ministry);
+        }
+        public bool checkRoleST()
+        {
+            return (this.Role == Role.student);
+        }
+
+       
     }
     public enum AccountStatus
     {
         Active = 1,
         Deactive = 0
+    }
+
+    public enum Role
+    {
+        Ministry = 1,
+        student = 0
     }
 }

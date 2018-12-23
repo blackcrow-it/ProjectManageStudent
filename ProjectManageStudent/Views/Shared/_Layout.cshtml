@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -33,7 +34,13 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li id="bth_login"><a asp-controller="Authentication" asp-action="Login">Login</a></li>
+                    <li style="color: red" id="user">@Context.Session.GetString("currentLogin")</li>
+                    <li id="bth_logout"><a asp-controller="Authentication" asp-action="logout">Logout</a></li>
                 </ul>
+                
+                    
+                
             </div>
         </div>
     </nav>
@@ -68,7 +75,17 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    <script>
+    $('#user').html();
 
+        if ($('#user').html() != "") {
+            $('#bth_login').remove();
+        } else {
+            $('#bth_logout').remove();
+        }
+    
+
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
