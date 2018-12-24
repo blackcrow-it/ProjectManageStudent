@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectManageStudent.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjectManageStudent.Controllers
 {
-    using System.Net;
+    using System;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Extensions;
+    using System.Net;
 
     public class AccountsController : Controller
     {
@@ -36,29 +35,43 @@ namespace ProjectManageStudent.Controllers
             return (ck);
         }
         // GET: Accounts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder )
         {
-            string currentLogin = HttpContext.Session.GetString("currentLogin");
-            if (currentLogin == null)
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            IQueryable<Account> studentIQ = from s in _context.Account
+                                            select s;
+            switch (sortOrder)
             {
-                return Redirect("/authentication/login");
+                case "name_desc":
+                    studentIQ = studentIQ.OrderByDescending(s => s.LastName);
+                    break;
+                case "Date":
+                    studentIQ = studentIQ.OrderBy(s => s.BirthDay);
+                    break;
+                case "date_desc":
+                    studentIQ = studentIQ.OrderByDescending(s => s.CreateAt);
+                    break;
+                default:
+                    studentIQ = studentIQ.OrderBy(s => s.LastName);
+                    break;
             }
-            var accounts = _context.Account.SingleOrDefault(a => a.Email == currentLogin);
-            if (accounts == null || accounts.checkRoleST())
+            if (this.checkSession())
             {
                 Response.StatusCode = 403;
-                
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
             var projectManageStudentContext = _context.Account.Include(a => a.Classroom);
             return View(await projectManageStudentContext.ToListAsync());
         }
 
-        public async Task<IActionResult> AddMark(int? id)
+        public async Task<IActionResult> AddMark(int? id , Mark mark)
         {
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
-                return Redirect("/Authentication/Login");
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
             if (id == null)
             {
@@ -70,8 +83,10 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
-            ViewData["Subject"] = new SelectList(_context.Subject, "Id", "Name");
-            return View(account);
+
+            ViewData["userId"] = id;
+            ViewData["Subject"] = new SelectList(_context.Subject, "Id", "Name" , mark.SubjectId);
+            return View(mark);
 
         }
         public async Task<IActionResult> AddMark2(Mark mark )
@@ -92,7 +107,7 @@ namespace ProjectManageStudent.Controllers
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
-                return Redirect("/Authentication/Login");
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
                 if (id == null)
             {
@@ -117,12 +132,11 @@ namespace ProjectManageStudent.Controllers
            
             if (this.checkSession())
             {
-                ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Name");
-                return View();
-               
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
-            Response.StatusCode = 403;
-            return Redirect("/Authentication/Login");
+            ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Name");
+            return View();
         }
 
         // POST: Accounts/Create
@@ -152,7 +166,7 @@ namespace ProjectManageStudent.Controllers
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
-                return Redirect("/Authentication/Login");
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
             if (id == null)
             {
@@ -213,7 +227,7 @@ namespace ProjectManageStudent.Controllers
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
-                return Redirect("/Authentication/Login");
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
             if (id == null)
             {

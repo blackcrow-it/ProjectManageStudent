@@ -12,10 +12,11 @@ namespace ProjectManageStudent.Models
         {
             this.CreatedAt = DateTime.Now;
             this.UpdateAt = DateTime.Now;
-            this.Practice = -1;
+            this.Practice = -1 ;
             this.Theory = -1;
             this.Assignment = -1;
             this.Status = MarkStatus.Null;
+            
         }
         public int Id { get; set; }
         public int AccountId { get; set; }
@@ -26,6 +27,7 @@ namespace ProjectManageStudent.Models
         public MarkStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
+        
         [ForeignKey("AccountId")]
         public Account Account { get; set; }
         [ForeignKey("SubjectId")]
@@ -36,4 +38,5 @@ namespace ProjectManageStudent.Models
         Fail = 0,
         Null = -1
     }
+    
 }

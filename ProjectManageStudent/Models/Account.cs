@@ -48,7 +48,7 @@ namespace ProjectManageStudent.Models
             return (this.Role == Role.student);
         }
 
-       
+      
     }
     public enum AccountStatus
     {
