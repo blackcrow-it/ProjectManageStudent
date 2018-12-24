@@ -21,5 +21,6 @@ namespace ProjectManageStudent.Models
         public DbSet<ProjectManageStudent.Models.Subject> Subject { get; set; }
 
         public DbSet<ProjectManageStudent.Models.Mark> Mark { get; set; }
+        public DbSet<ProjectManageStudent.Models.Credential> Credential { get; set; }
     }
 }

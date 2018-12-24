@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManageStudent.Models;
 
 namespace ProjectManageStudent.Migrations
 {
     [DbContext(typeof(ProjectManageStudentContext))]
-    partial class ProjectManageStudentContextModelSnapshot : ModelSnapshot
+    [Migration("20181224051844_AddCredential")]
+    partial class AddCredential
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,26 +75,6 @@ namespace ProjectManageStudent.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Classroom");
-                });
-
-            modelBuilder.Entity("ProjectManageStudent.Models.Credential", b =>
-                {
-                    b.Property<string>("AccessToken")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<DateTime>("ExpiredAt");
-
-                    b.Property<int>("OwnerId");
-
-                    b.Property<int>("Status");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.HasKey("AccessToken");
-
-                    b.ToTable("Credential");
                 });
 
             modelBuilder.Entity("ProjectManageStudent.Models.Mark", b =>
