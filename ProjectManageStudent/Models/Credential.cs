@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace ProjectManageStudent.Models
             this.ExpiredAt = DateTime.Now.AddDays(7);
             this.OwnerId = OwnerId;
         }
+        [Key]
         public string AccessToken { get; set; }
         public int OwnerId { get; set; }
         public DateTime CreatedAt { get; set; }
