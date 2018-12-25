@@ -17,6 +17,11 @@ namespace ProjectManageStudent.Models
             this.UpdateAt = DateTime.Now;
             this.Status = AccountStatus.Active;
         }
+        public Account(string newPassword)
+        {
+            this.Password = newPassword;
+            this.UpdateAt = DateTime.Now;
+        }
         public int Id { get; set; }
         public int ClassroomId { get; set; }
         [Required]
@@ -42,7 +47,6 @@ namespace ProjectManageStudent.Models
         
         [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
-
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public AccountStatus Status { get; set; }
