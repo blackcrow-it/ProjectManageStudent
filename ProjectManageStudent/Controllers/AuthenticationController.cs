@@ -18,21 +18,22 @@ namespace ProjectManageStudent.Controllers
             _context = context;
         }
         
-        public ActionResult Login()
+        public ActionResult Login(string Url)
         {
             string Login = HttpContext.Session.GetString("currentLogin");
             if (Login != null)
             {
                 return Redirect("/Home/About");
             }
-           
+
+            ViewData["Url"] = Url;
             return View();
                 
         }
 
         // GET: Authentication/Details/5
         [HttpPost]
-        public IActionResult Login(Account account )
+        public IActionResult Login(Account account , string Url )
         {
             var existAccount = _context.Account.SingleOrDefault(a => a.Email == account.Email);
             if (existAccount != null)
@@ -42,6 +43,10 @@ namespace ProjectManageStudent.Controllers
                     HttpContext.Session.SetString("currentLogin", existAccount.Email);
                     HttpContext.Session.SetString("currentLoginId", existAccount.Id.ToString());
                     HttpContext.Session.SetString("currentLoginRole", existAccount.Role.ToString());
+                    if (Url !=null)
+                    {
+                        return Redirect(Url);
+                    }
                     return Redirect("/accounts/Index");
                 }
             }
