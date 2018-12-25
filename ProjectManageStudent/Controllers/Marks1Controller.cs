@@ -9,23 +9,23 @@ using ProjectManageStudent.Models;
 
 namespace ProjectManageStudent.Controllers
 {
-    public class MarksController : Controller
+    public class Marks1Controller : Controller
     {
         private readonly ProjectManageStudentContext _context;
 
-        public MarksController(ProjectManageStudentContext context)
+        public Marks1Controller(ProjectManageStudentContext context)
         {
             _context = context;
         }
 
-        // GET: Marks
+        // GET: Marks1
         public async Task<IActionResult> Index()
         {
             var projectManageStudentContext = _context.Mark.Include(m => m.Account).Include(m => m.Subject);
             return View(await projectManageStudentContext.ToListAsync());
         }
 
-        // GET: Marks/Details/5
+        // GET: Marks1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,20 +45,20 @@ namespace ProjectManageStudent.Controllers
             return View(mark);
         }
 
-        // GET: Marks/Create
+        // GET: Marks1/Create
         public IActionResult Create()
         {
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name");
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name");
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id");
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id");
             return View();
         }
 
-        // POST: Marks/Create
+        // POST: Marks1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AccountId,SubjectId,Theory,Practice,Assignment,Statust")] Mark mark)
+        public async Task<IActionResult> Create([Bind("Id,AccountId,SubjectId,Theory,Practice,Assignment,Status,CreatedAt,UpdateAt")] Mark mark)
         {
             if (ModelState.IsValid)
             {
@@ -66,12 +66,12 @@ namespace ProjectManageStudent.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name", mark.AccountId);
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name", mark.SubjectId);
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id", mark.AccountId);
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id", mark.SubjectId);
             return View(mark);
         }
 
-        // GET: Marks/Edit/5
+        // GET: Marks1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,12 +84,12 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name", mark.AccountId);
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name", mark.SubjectId);
+            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Id", mark.AccountId);
+            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Id", mark.SubjectId);
             return View(mark);
         }
 
-        // POST: Marks/Edit/5
+        // POST: Marks1/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -126,7 +126,7 @@ namespace ProjectManageStudent.Controllers
             return View(mark);
         }
 
-        // GET: Marks/Delete/5
+        // GET: Marks1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,7 +146,7 @@ namespace ProjectManageStudent.Controllers
             return View(mark);
         }
 
-        // POST: Marks/Delete/5
+        // POST: Marks1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

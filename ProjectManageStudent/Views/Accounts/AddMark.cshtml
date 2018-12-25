@@ -1,5 +1,7 @@
 ﻿@model ProjectManageStudent.Models.Mark
-
+@{
+    List<Subject> list = ViewBag.Funds as List<Subject>;
+}
 <!DOCTYPE html>
 
 <html>
@@ -12,29 +14,41 @@
             <form asp-action="AddMark2">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group ">
-                    <input type="hidden" class="form-control" name="AccountId" value="@ViewData["userId"]" />
+                    <input type="hidden" class="form-control"  name="Account" value="@ViewData["userId"]" />
+                </div>
+                <div class="form-group ">
+                    <input type="hidden" class="form-control" id="same"  name="Subject" value="" />
+                </div>
+                <div class="form-group ">
+                    <input type="hidden" class="form-control" asp-for="AccountId"  value="@ViewData["userId"]" />
                 </div>
                 <div class="form-group ">
                     <label class="control-label"></label>
-                    <select name="SubjectId" style="margin-top: 2%" class="form-control" asp-items="ViewBag.Subject"></select>
+                    <select asp-for="SubjectId" id="likessss" class="form-control">
+                        @foreach (var i in list)
+                        {
+                            <option  value="@i.Id">@i.Name</option>
+                        }
+                       
+                    </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="Theory" class="control-label"></label>
-                    <input asp-for="Theory" class="form-control" />
+                    <input asp-for="Theory" type="number" max="10" class="form-control" />
                     <span asp-validation-for="Theory" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Practice" class="control-label"></label>
-                    <input asp-for="Practice" class="form-control" />
+                    <input asp-for="Practice"  class="form-control" />
                     <span asp-validation-for="Practice" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Assignment" class="control-label"></label>
-                    <input asp-for="Assignment" class="form-control" />
+                    <input asp-for="Assignment" type="number" max="10" class="form-control" />
                     <span asp-validation-for="Assignment" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="submit" style="margin-top: 15%"  value="Create" class="btn btn-default" />
+                    <input type="submit" id="chu" style="margin-top: 15%"  value="Create" class="btn btn-default" />
                 </div>
             </form>
         </div>

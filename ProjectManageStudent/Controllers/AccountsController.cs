@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ProjectManageStudent.Controllers
 {
     using System;
+    using System.Collections.Generic;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Extensions;
@@ -66,7 +67,7 @@ namespace ProjectManageStudent.Controllers
             return View(await projectManageStudentContext.ToListAsync());
         }
 
-        public async Task<IActionResult> AddMark(int? id , Mark mark)
+        public async Task<IActionResult> AddMark(int id , Mark mark)
         {
             if (this.checkSession())
             {
@@ -78,27 +79,42 @@ namespace ProjectManageStudent.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Account
+                              .Include(a => a.Classroom)
+                              .Include(m => m.Marks).ThenInclude(s => s.Subject)
+                              .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
             }
-
+            List<Subject> fundList = _context.Subject.ToList();
+            ViewBag.Funds = fundList;
             ViewData["userId"] = id;
             ViewData["Subject"] = new SelectList(_context.Subject, "Id", "Name" , mark.SubjectId);
             return View(mark);
 
         }
-        public async Task<IActionResult> AddMark2(Mark mark )
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddMark2(Mark mark ,int Subject ,int Account)
         {
-            if (ModelState.IsValid)
+            
+            var exisMark = _context.Mark.Where(q=>q.SubjectId == Subject).Where(a=>a.AccountId == Account).Select(nv=>nv.AccountId == Account).FirstOrDefault();
+            if (exisMark)
             {
+                return Json("Đã có");
+            }
+            if (ModelState.IsValid )
+            {
+                if (mark.Theory == -1 || mark.Assignment == -1 || mark.Practice == -1)
+                {
+                    mark.Status = MarkStatus.Null;
+                }
                 _context.Add(mark);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
-            return View();
+                return Redirect("/AddMark");
         }
         // GET: Accounts/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -113,7 +129,7 @@ namespace ProjectManageStudent.Controllers
             {
                 return NotFound();
             }
-
+                
             var account = await _context.Account
                 .Include(a => a.Classroom)
                 .Include(m=>m.Marks).ThenInclude(s=>s.Subject)
@@ -126,7 +142,6 @@ namespace ProjectManageStudent.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Create
         public IActionResult Create()
         {
            
@@ -221,7 +236,7 @@ namespace ProjectManageStudent.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Delete/5
+        
         public async Task<IActionResult> Delete(int? id)
         {
             if (this.checkSession())

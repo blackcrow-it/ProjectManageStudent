@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProjectManageStudent.Models
 {
-    public class Subject
+    using System.Collections;
+
+    public class Subject : IEnumerable
     {
         public Subject()
         {
@@ -19,5 +21,10 @@ namespace ProjectManageStudent.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public List<Mark> Marks { get; set; }
+
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
