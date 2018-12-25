@@ -106,12 +106,23 @@ namespace ProjectManageStudent.Controllers
             }
             if (ModelState.IsValid )
             {
+                int max = 35;
+                float total = (mark.Theory + mark.Assignment +mark.Practice)/max*100;
+                if (total >= 14)
+                {
+                    mark.Status = MarkStatus.Pass;
+                }
+                else
+                {
+                    mark.Status = MarkStatus.Fail;
+                }
                 if (mark.Theory == -1 || mark.Assignment == -1 || mark.Practice == -1)
                 {
                     mark.Status = MarkStatus.Null;
                 }
                 _context.Add(mark);
                 await _context.SaveChangesAsync();
+               
                 return RedirectToAction(nameof(Index));
             }
                 return Redirect("/AddMark");
@@ -144,7 +155,7 @@ namespace ProjectManageStudent.Controllers
 
         public IActionResult Create()
         {
-           
+
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
@@ -159,7 +170,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Phone,Address,BirthDay,ConfirmPassword,Role")] Account account)
+        public async Task<IActionResult> Create([Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Avartar,Phone,Address,BirthDay,ConfirmPassword,Role")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -202,7 +213,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Phone,Address,BirthDay,ConfirmPassword,Role")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Avartar,Phone,Address,BirthDay,Role")] Account account)
         {
             if (id != account.Id)
             {
@@ -235,7 +246,6 @@ namespace ProjectManageStudent.Controllers
             ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Id", account.ClassroomId);
             return View(account);
         }
-
         
         public async Task<IActionResult> Delete(int? id)
         {
