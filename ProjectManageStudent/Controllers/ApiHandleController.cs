@@ -20,10 +20,11 @@ namespace ProjectManageStudent.Controllers
         {
             _context = context;
         }
-
-        [HttpGet("Information/{Account}")]
+        // lấy ra thông tin sinh viên
+        [HttpGet("Information")]
         public async Task<IActionResult> Information()
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -49,24 +50,55 @@ namespace ProjectManageStudent.Controllers
             Response.StatusCode = (int)HttpStatusCode.Forbidden;
             return new JsonResult("Not Found");
         }
-
-//TO DO
-        [HttpGet("ListStudentInClass/{classroomId}")]
-        public IEnumerable<Account> ListStudent(string classroom)
+        [HttpPost("Information")]
+        public async Task<IActionResult> UpdatePassword(ChangePassword changePassword)
         {
-            return _context.Account;
-        }
 
-        [HttpGet("Subject/{account}")]
-        public IEnumerable<Subject> ListSubject(string Account)
-        {
-            return _context.Subject;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var basicToken = Request.Headers["Authorization"].ToString();
+            var token = basicToken.Replace("Basic ", "");
+            var existToken = _context.Credential.SingleOrDefault(a => a.AccessToken == token);
+            if (existToken != null)
+            {
+                var existAccount = _context.Account.SingleOrDefault(i => i.Id == existToken.OwnerId);
+                if (existAccount != null)
+                {
+                    if (existAccount.Password == PasswordHandle.PasswordHandle.GetInstance().EncryptPassword(changePassword.Password, existAccount.Salt))
+                    {
+                        var encryptNewPassword = PasswordHandle.PasswordHandle.GetInstance().EncryptPassword(changePassword.NewPassword, existAccount.Salt);
+                        existAccount.Password = encryptNewPassword;
+                        existAccount.UpdateAt = DateTime.Now;
+                        _context.Account.Update(existAccount);
+                        _context.SaveChanges();
+                        return new JsonResult(existAccount);
+                    }
+                    return new JsonResult(changePassword);
+                }
+            }
+            Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            return new JsonResult("Not Found");
         }
+        
+        ////TO DO
+        //[HttpGet("ListStudentInClass")]
+        //public IEnumerable<Account> ListStudent(string classroom)
+        //{
+        //    return _context.Account;
+        //}
+        //[HttpGet("Subject/{account}")]
+        //public IEnumerable<Subject> ListSubject(string Account)
+        //{
+        //    return _context.Subject;
+        //}
 
-        [HttpGet("Mark")]
-        public IEnumerable<Mark> Mark(string Account)
-        {
-            return _context.Mark;
-        }
+        //[HttpGet("Mark")]
+        //public IEnumerable<Mark> Mark(string Account)
+        //{
+        //    return _context.Mark;
+        //}
+
     }
 }

@@ -18,6 +18,11 @@ namespace ProjectManageStudent.Models
             this.Status = AccountStatus.Active;
            
         }
+        public Account(string newPassword)
+        {
+            this.Password = newPassword;
+            this.UpdateAt = DateTime.Now;
+        }
         public int Id { get; set; }
         public int ClassroomId { get; set; }
         [Required]
