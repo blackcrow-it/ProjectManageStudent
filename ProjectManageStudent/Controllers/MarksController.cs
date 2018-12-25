@@ -105,6 +105,20 @@ namespace ProjectManageStudent.Controllers
             {
                 try
                 {
+                    int max = 35;
+                    float total = (mark.Theory + mark.Assignment + mark.Practice) / max * 100;
+                    if (total >= 14)
+                    {
+                        mark.Status = MarkStatus.Pass;
+                    }
+                    else
+                    {
+                        mark.Status = MarkStatus.Fail;
+                    }
+                    if (mark.Theory == -1 || mark.Assignment == -1 || mark.Practice == -1)
+                    {
+                        mark.Status = MarkStatus.Null;
+                    }
                     _context.Update(mark);
                     await _context.SaveChangesAsync();
                 }

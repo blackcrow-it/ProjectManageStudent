@@ -41,7 +41,18 @@ $(document).ready(function () {
 $(document).ready(function () {
     $("#chu").click(function () {
         var likexx = $("#likessss").val();
-alert(likexx);
-        $("#same").val(likexx);
+    $("#same").val(likexx);
+    });
+})
+$(document).ready(function () {
+    $("#ava").change(function () {
+        var img = $('#ava').val();
+        $('#imgs').attr('src', img);
+    });
+})
+$(document).ready(function () {
+    $("#ava1").change(function () {
+        var img = $('#ava1').val();
+        $('#imgs1').attr('src', img);
     });
 })
