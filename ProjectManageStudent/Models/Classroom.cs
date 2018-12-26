@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManageStudent.Models
 {
+    using Newtonsoft.Json;
     using System.Collections;
     using System.ComponentModel.DataAnnotations;
 
@@ -20,6 +21,7 @@ namespace ProjectManageStudent.Models
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        [JsonIgnore]
         public List<Account> Accounts { get; set; }
 
        
