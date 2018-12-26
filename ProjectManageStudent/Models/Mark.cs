@@ -15,18 +15,16 @@ namespace ProjectManageStudent.Models
         {
             this.CreatedAt = DateTime.Now;
             this.UpdateAt = DateTime.Now;
-            this.Practice = -1 ;
-            this.Theory = -1;
-            this.Assignment = -1;
          }
         public int Id { get; set; }
         public int AccountId { get; set; }
         public int SubjectId { get; set; }
-        
         public float Theory { get; set; }
-        
+        public MarkStatus StatusTheory { get; set; }
         public float Practice { get; set; }
+        public MarkStatus StatusPractice { get; set; }
         public float Assignment { get; set; }
+        public MarkStatus StatusAssignment { get; set; }
         public MarkStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
