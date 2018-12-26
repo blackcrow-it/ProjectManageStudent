@@ -77,7 +77,8 @@ namespace ProjectManageStudent.Controllers
             var exisMark = _context.Mark.Where(q=>q.SubjectId == Subject).Where(a=>a.AccountId == Account).Select(nv=>nv.AccountId == Account).FirstOrDefault();
             if (exisMark)
             {
-                return Json("Đã có");
+                TempData["ss"] = "*Học sinh đã có điểm môn này";
+                return Redirect("Account/AddMark");
             }
             if (ModelState.IsValid )
             {
@@ -153,7 +154,7 @@ namespace ProjectManageStudent.Controllers
                 var exisEmail = this._context.Account.SingleOrDefault(a=>a.Email == account.Email);
                 if (exisEmail != null)
                 {
-                    TempData["fail"] = "Email đã được sử dụng";
+                    TempData["ss"] = "* Emai đã được sử dụng";
                     return RedirectToAction(nameof(Create));
                 }
                 account.Salt = PasswordHandle.PasswordHandle.GetInstance().GenerateSalt();
@@ -195,7 +196,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Avartar,Phone,Address,BirthDay,Role,Gender")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Avartar,Phone,Address,BirthDay,Gender")] Account account)
         {
             if (id != account.Id)
             {

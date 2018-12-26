@@ -72,20 +72,21 @@
                 <p>Please enter your email and password</p>
             </div>
             <form asp-action="Login">
-                <input type="hidden" name="Url" value="@ViewData["Url"]" />
+                <h5 style="color: red"> @TempData["ss"]</h5>
+                <input type="hidden" name="Url" value="@ViewData["Url"]"/>
                 <div class="form-group">
                     <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control"/>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" type="password" class="form-control" />
+                    <input asp-for="Password" type="password" class="form-control"/>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-success" />
+                    <input type="submit" value="Login" class="btn btn-success"/>
                 </div>
             </form>
         </div>

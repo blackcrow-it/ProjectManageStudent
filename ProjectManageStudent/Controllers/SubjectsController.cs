@@ -53,7 +53,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,CreatedAt,UpdateAt")] Subject subject)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Subject subject)
         {
             if (ModelState.IsValid)
             {

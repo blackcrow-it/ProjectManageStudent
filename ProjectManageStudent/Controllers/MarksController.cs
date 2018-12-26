@@ -46,12 +46,7 @@ namespace ProjectManageStudent.Controllers
         }
 
         // GET: Marks/Create
-        public IActionResult Create()
-        {
-            ViewData["AccountId"] = new SelectList(_context.Account, "Id", "Name");
-            ViewData["SubjectId"] = new SelectList(_context.Subject, "Id", "Name");
-            return View();
-        }
+       
 
         // POST: Marks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
