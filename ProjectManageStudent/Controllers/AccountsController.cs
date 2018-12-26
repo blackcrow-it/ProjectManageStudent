@@ -32,53 +32,28 @@ namespace ProjectManageStudent.Controllers
             {
                 ck = true;
             }
-
+            
             return (ck);
         }
         // GET: Accounts
-        public async Task<IActionResult> Index(string sortOrder )
+        public async Task<IActionResult> Index()
         {
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-
-            IQueryable<Account> studentIQ = from s in _context.Account
-                                            select s;
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    studentIQ = studentIQ.OrderByDescending(s => s.LastName);
-                    break;
-                case "Date":
-                    studentIQ = studentIQ.OrderBy(s => s.BirthDay);
-                    break;
-                case "date_desc":
-                    studentIQ = studentIQ.OrderByDescending(s => s.CreateAt);
-                    break;
-                default:
-                    studentIQ = studentIQ.OrderBy(s => s.LastName);
-                    break;
-            }
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
                 return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
-            var projectManageStudentContext = _context.Account.Include(a => a.Classroom);
+            var projectManageStudentContext = _context.Account.OrderByDescending(c=>c.Role == Role.student).Include(a => a.Classroom);
             return View(await projectManageStudentContext.ToListAsync());
         }
 
-        public async Task<IActionResult> AddMark(int id , Mark mark)
+        public async Task<IActionResult> AddMark(int id , Mark mark )
         {
             if (this.checkSession())
             {
                 Response.StatusCode = 403;
                 return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
             }
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var account = await _context.Account
                               .Include(a => a.Classroom)
                               .Include(m => m.Marks).ThenInclude(s => s.Subject)
@@ -120,6 +95,7 @@ namespace ProjectManageStudent.Controllers
                 {
                     mark.Status = MarkStatus.Null;
                 }
+                
                 _context.Add(mark);
                 await _context.SaveChangesAsync();
                
@@ -170,10 +146,16 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Avartar,Phone,Address,BirthDay,ConfirmPassword,Role")] Account account)
+        public async Task<IActionResult> Create([Bind("Id,ClassroomId,Email,Password,FirstName,LastName,Avartar,Phone,Address,BirthDay,ConfirmPassword,Role,Gender")] Account account)
         {
             if (ModelState.IsValid)
             {
+                var exisEmail = this._context.Account.SingleOrDefault(a=>a.Email == account.Email);
+                if (exisEmail != null)
+                {
+                    TempData["fail"] = "Email đã được sử dụng";
+                    return RedirectToAction(nameof(Create));
+                }
                 account.Salt = PasswordHandle.PasswordHandle.GetInstance().GenerateSalt();
                 account.Password = PasswordHandle.PasswordHandle.GetInstance()
                     .EncryptPassword(account.Password, account.Salt);
@@ -213,7 +195,7 @@ namespace ProjectManageStudent.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Avartar,Phone,Address,BirthDay,Role")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassroomId,Email,FirstName,LastName,Avartar,Phone,Address,BirthDay,Role,Gender")] Account account)
         {
             if (id != account.Id)
             {
@@ -246,7 +228,62 @@ namespace ProjectManageStudent.Controllers
             ViewData["ClassroomId"] = new SelectList(_context.Classroom, "Id", "Id", account.ClassroomId);
             return View(account);
         }
-        
+        public async Task<IActionResult> ChangePass(int? id)
+        {
+
+            if (this.checkSession())
+            {
+                Response.StatusCode = 403;
+                return Redirect("/Authentication/Login?Url=" + WebUtility.UrlEncode(Request.GetDisplayUrl()));
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+           
+            return View(account);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePass(int id, [Bind("Id,Password,ConfirmPassword")] Account account)
+        {
+            if (id != account.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    account.Salt = PasswordHandle.PasswordHandle.GetInstance().GenerateSalt();
+                    account.Password = PasswordHandle.PasswordHandle.GetInstance()
+                        .EncryptPassword(account.Password, account.Salt);
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+           
+            return View(account);
+        }
         public async Task<IActionResult> Delete(int? id)
         {
             if (this.checkSession())

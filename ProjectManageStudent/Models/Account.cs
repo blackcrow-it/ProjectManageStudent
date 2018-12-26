@@ -16,13 +16,13 @@ namespace ProjectManageStudent.Models
             this.CreateAt = DateTime.Now;
             this.UpdateAt = DateTime.Now;
             this.Status = AccountStatus.Active;
+           
         }
         public int Id { get; set; }
         public int ClassroomId { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        
         public string Password { get; set; }
         [NotMapped]
         [Compare("Password")]
@@ -33,16 +33,17 @@ namespace ProjectManageStudent.Models
         [Required]
         public string FirstName { get; set; }
         public Role Role { get; set; }
+
+        public genderStatus Gender { get; set; }
         [Required]
         public string LastName { get; set; }
         [Required]
+        [Phone]
         public string Phone { get; set; }
         [Required]
         public string Address { get; set; }
-        
         [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
-
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public AccountStatus Status { get; set; }
@@ -58,15 +59,19 @@ namespace ProjectManageStudent.Models
         {
             return (this.Role == Role.student);
         }
-
-      
-    }
+        }
     public enum AccountStatus
     {
         Active = 1,
         Deactive = 0
     }
 
+    public enum genderStatus
+    {
+        Male = 1,
+        Female = 2,
+        Other = 0
+    }
     public enum Role
     {
         Ministry = 1,

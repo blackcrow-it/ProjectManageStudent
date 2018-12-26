@@ -17,6 +17,7 @@ $(Document).ready(function () {
         
     });
 })
+
 $(document).ready(function () {
     $("#bth_editFil").click(function () {
         if ($("#Id").val() != "") {
@@ -30,6 +31,7 @@ $(document).ready(function () {
 
                 success: function (data) {
                     alert("Update success");
+                    location.reload();
                 },
                 error: function (data) {
                     alert("Update fail");
@@ -41,7 +43,30 @@ $(document).ready(function () {
 $(document).ready(function () {
     $("#chu").click(function () {
         var likexx = $("#likessss").val();
-    $("#same").val(likexx);
+        $("#same").val(likexx);
+        if ($('#theo').val() == "") {
+             $('#theo').val(-1);
+        }
+        if ($('#pra').val() == "") {
+            $('#pra').val(-1);
+        }
+        if ($('#ass').val() == "") {
+            $('#ass').val(-1);
+        }
+    });
+})
+$(document).ready(function () {
+    $("#bth_editFil").click(function () {
+        
+        if ($('#Theory').val() == "") {
+            $('#Theory').val(-1);
+        }
+        if ($('#Practice').val() == "") {
+            $('#Practice').val(-1);
+        }
+        if ($('#Assignment').val() == "") {
+            $('#Assignment').val(-1);
+        }
     });
 })
 $(document).ready(function () {
@@ -56,3 +81,14 @@ $(document).ready(function () {
         $('#imgs1').attr('src', img);
     });
 })
+$(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable1 tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+$(document).ready(function () {
+    $('#example').DataTable();
+});

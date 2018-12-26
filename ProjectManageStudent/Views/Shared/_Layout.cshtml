@@ -18,33 +18,32 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ProjectManageStudent</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Accounts" asp-action="Index">Student</a></li>
-                    <li><a asp-area="" asp-controller="Classrooms" asp-action="Index">Class</a></li>
-                    <li><a asp-area="" asp-controller="Subjects" asp-action="Index">Subject</a></li>
-                    <li id="bth_login"><a asp-controller="Authentication" asp-action="Login">Login</a></li>
-                    <li style="color: red" id="user">@Context.Session.GetString("currentLogin")</li>
-                    <li id="bth_logout"><a asp-controller="Authentication" asp-action="logout">Logout</a></li>
-                </ul>
-                
-                    
-                
-            </div>
+    
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-    </nav>
-
+        <ul class="nav navbar-nav">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index"><h3 style="margin-top: -9%" >Home</h3></a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+            <li><a asp-area="" asp-controller="Accounts" asp-action="Index">Student</a></li>
+            <li><a asp-area="" asp-controller="Classrooms" asp-action="Index">Class</a></li>
+            <li><a asp-area="" asp-controller="Subjects" asp-action="Index">Subject</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+           
+            <li><a id="bth_login" asp-controller="Authentication" asp-action="Login"> Login</a></li>
+            <li><a id="bth_logout" asp-controller="Authentication"  asp-action="logout"> Logout</a></li>
+            <li><a asp-area="" id="user" asp-controller="Accounts" asp-action="ChangePass/@Context.Session.GetString("currentLoginId")">@Context.Session.GetString("currentLogin")</a></li>
+        </ul>
+    </div>
+</nav>
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">

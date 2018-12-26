@@ -9,8 +9,8 @@
 <div>
     
     <dl class="dl-horizontal">
-       
-       
+
+
         <dt>
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
@@ -29,25 +29,28 @@
                     <th scope="col">Email</th>
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Address</th>
                     <th scope="col">Phone</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var st in Model.Accounts)
-                {
-                    <tr>
+            @foreach (var st in Model.Accounts)
+            {
+                <tr>
 
                     <td><a asp-action="../Accounts/Details" asp-route-id="@st.Id"> @st.Email</a></td>
                     <td>@st.FirstName</td>
                     <td>@st.LastName</td>
+                    <td>@st.Gender</td>
                     <td>@st.Address</td>
                     <td>@st.Phone</td>
                 </tr>
-        }
+            }
             </tbody>
         </table>
-    </dl>
+        
+</dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

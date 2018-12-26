@@ -5,118 +5,133 @@
 }
 
 <h2> @Html.DisplayFor(model => model.Email)</h2>
-
-<div>    
-    <img src="@Model.Avartar" width="200px"/>
-    <dl class="dl-horizontal">
-         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BirthDay)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BirthDay)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreateAt)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Classroom)
-        </dt>
-        <dd>
-            <a asp-action="../Classrooms/Details" asp-route-id="@Model.ClassroomId">@Html.DisplayFor(modelItem => Model.Classroom.Name)</a>
-        </dd>
-    </dl>
-</div>
-<table class="table" >
-      
-    
-      
-    <thead>
-        <tr>
-            @*<th></th>*@
-            <th></th>
-            <th>Practive</th>
-            <th>Theory Date</th>
-            <th>Assignment</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-      
-    <tbody id="myTable">
-    @foreach(var ma in Model.Marks) {
-        <tr>
-            <td style="display: none">@ma.SubjectId</td>
-            <td style="display: none" >@ma.Id</td>
-            <th>@ma.Subject.Name</th>
-            @if (@ma.Practice == -1)
-            {
-                <td>NULL</td>
-            }
-            else
-            {
-                <td>@ma.Practice</td>
-            }
-            @if (@ma.Theory == -1)
-            {
-                <td>NULL</td>
-            }
-            else
-            {
-                <td>@ma.Theory</td>
-            }
-            @if (@ma.Assignment == -1)
-            {
-                <td>NULL</td>
-            }
-            else
-            {
-                <td>@ma.Assignment</td>
-            }
-            <td>@ma.Status</td>
-            <td>
-                <button type="button" class="btn btn-primary bthEdit" id="bth_editMark" data-toggle="modal" data-target="#exampleModal">
-                    Edit
-                </button>
-            </td>
-        </tr>
+<style>
+    img.img-circle {
+        width: 200px;
+        height: 200px;
+        border: 2px solid #51D2B7;
     }
+</style>
 
-    </tbody>
-      
-</table>
+<div class="row">
+    <div class="col-md-12 ">
+        <button asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info pull-right" value="Edit Profile">Edit information</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <img src="@Model.Avartar" width="200px" class="center-block img-circle"/>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.BirthDay)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.BirthDay)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CreateAt)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CreateAt)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Classroom)
+                </dt>
+                <dd>
+                    <a asp-action="../Classrooms/Details" asp-route-id="@Model.ClassroomId">@Html.DisplayFor(modelItem => Model.Classroom.Name)</a>
+                </dd>
+            </dl>
+        
+    </div>
+    <div class="col-md-8">
+       
+                <table class="table">
+                  <thead>
+                    <tr>
+                        @*<th></th>*@
+                        <th></th>
+                        <th>Practive</th>
+                        <th>Theory Date</th>
+                        <th>Assignment</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable">
+                    @foreach (var ma in Model.Marks)
+                    {
+                        <tr>
+                            <td style="display: none">@ma.SubjectId</td>
+                            <td style="display: none">@ma.Id</td>
+                            <th>@ma.Subject.Name</th>
+                            @if (@ma.Practice == -1)
+                            {
+                                <td>NULL</td>
+                            }
+                            else
+                            {
+                                <td>@ma.Practice</td>
+                            }
+                            @if (@ma.Theory == -1)
+                            {
+                                <td>NULL</td>
+                            }
+                            else
+                            {
+                                <td>@ma.Theory</td>
+                            }
+                            @if (@ma.Assignment == -1)
+                            {
+                                <td>NULL</td>
+                            }
+                            else
+                            {
+                                <td>@ma.Assignment</td>
+                            }
+                            <td>@ma.Status</td>
+                            <td>
+                                <button type="button" class="btn btn-primary bthEdit" id="bth_editMark" data-toggle="modal" data-target="#exampleModal">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            
+    </div>
+</div>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -131,20 +146,20 @@
                     <input type="hidden" id="SubjectId" name="SubjectId" />
                     <input type="hidden" id="Id" name="Id" />
                     <input type="hidden" id="AccountId" name="AccountId" value="@Model.Id" />
-                    Practice: <input type="text" class="form-control" id="Practice" name="Practice">
-                    Theory: <input type="text" class="form-control" id="Theory" name="Theory">
-                    Assignment: <input type="text" class="form-control" id="Assignment" name="Assignment">
-                    
+                    Practice: <input type="number" class="form-control" id="Practice" name="Practice">
+                    Theory: <input type="number" class="form-control" id="Theory" name="Theory">
+                    Assignment: <input type="number" class="form-control" id="Assignment" name="Assignment">
+
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="bth_editFil" class="btn btn-primary">Save changes</button>
+                <button type="button" id="bth_editFil" data-dismiss="modal" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    
     <a asp-action="Index">Back to List</a>
 </div>
