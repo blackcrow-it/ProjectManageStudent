@@ -40,7 +40,7 @@ namespace ProjectManageStudent.Controllers
                     var existAccount = _context.Account.SingleOrDefault(a => a.Id == Id);
                     if (existAccount != null)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.NotFound; 
+                        Response.StatusCode = (int)HttpStatusCode.NotFound;
                         return new JsonResult(existAccount);
                     }
                     Response.StatusCode = (int)HttpStatusCode.Forbidden;
@@ -81,13 +81,73 @@ namespace ProjectManageStudent.Controllers
             Response.StatusCode = (int)HttpStatusCode.Forbidden;
             return new JsonResult("Not Found");
         }
-        
-        ////TO DO
+        // changeInformation
+        // còn address và avatar
+        [HttpPost("changeInformation")]
+        public async Task<IActionResult> ChangeInformation(ChangeInformation changeInformation)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult("demo");
+            }
+            var basicToken = Request.Headers["Authorization"].ToString();
+            var token = basicToken.Replace("Basic ", "");
+            var existToken = _context.Credential.SingleOrDefault(a => a.AccessToken == token);
+            if (existToken != null)
+            {
+                var existAccount = _context.Account.SingleOrDefault(i => i.Id == existToken.OwnerId);
+
+                if (existAccount != null)
+                {
+                    if (existAccount.Phone != null)
+                    {
+                        if(changeInformation.Phone == existAccount.Phone)
+                        {
+                            var phone = changeInformation.NewPhone;
+                            existAccount.Phone = phone;
+                            _context.Account.Update(existAccount);
+                            _context.SaveChanges();
+                            Response.StatusCode = (int)HttpStatusCode.OK;
+                            return new JsonResult(existAccount);
+                        }
+
+                        return new JsonResult("BadRequest");
+                    }
+
+                }
+                return new JsonResult(existAccount);
+            }
+            Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            return new JsonResult("Forbidden");
+        }
+        //Doing
         //[HttpGet("ListStudentInClass")]
         //public IEnumerable<Account> ListStudent(string classroom)
         //{
         //    return _context.Account;
         //}
+        [HttpPost("ListStudentInClass")]
+        public async Task<IActionResult> ListStudentInClass(Account account)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var basicToken = Request.Headers["Authorization"].ToString();
+            var token = basicToken.Replace("Basic ", "");
+            var existToken = _context.Credential.SingleOrDefault(a => a.AccessToken == token);
+            if (existToken != null)
+            {
+                var existAccount = _context.Account.SingleOrDefault(i => i.Id == existToken.OwnerId);
+                if (existAccount != null)
+                {
+                }
+            }
+            Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            return new JsonResult("Not Found");
+        }
         //[HttpGet("Subject/{account}")]
         //public IEnumerable<Subject> ListSubject(string Account)
         //{
