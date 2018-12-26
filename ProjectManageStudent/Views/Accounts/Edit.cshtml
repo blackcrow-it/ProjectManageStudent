@@ -7,72 +7,117 @@
 <h2>Edit</h2>
 <style>
     img.img-circle {
-        width: 120px;
-        height: 120px;
+        width: 200px;
+        height: 200px;
         border: 2px solid #51D2B7;
     }
 </style>
 <h4>Account</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-      
-        <center>
-            <img scr="@Model.Avartar" class="img-circle" id="imgs1" />
-        </center>
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ClassroomId" class="control-label"></label>
-                <select asp-for="ClassroomId" class="form-control" asp-items="ViewBag.ClassroomId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Avartar" class="control-label"></label>
-                <input asp-for="Avartar" id="ava1" class="form-control" />
-                <span asp-validation-for="Avartar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control">
-                    <option value="1">Ministry</option>
-                    <option value="0">Student</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control" />
-                <span asp-validation-for="BirthDay" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+<div class="container ">
+
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+
+
+            <div class="text-center">
+                <img src="@Model.Avartar" class="avatar img-circle img-thumbnail" id="imgs" alt="avatar">
+            </div><br>
+        </div><!--/col-3-->
+        <div class="col-sm-9">
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <hr>
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="ClassroomId" class="control-label"></label>
+                                <select asp-for="ClassroomId" class="form-control" asp-items="ViewBag.ClassroomId"></select>
+                            </div>
+                        </div>
+                       <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="Avartar" class="control-label"></label>
+                                <input asp-for="Avartar" id="ava" class="form-control" />
+                                <span asp-validation-for="Avartar" class="text-danger"></span>
+                            </div>
+                        </div>
+                       <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="Role" class="control-label"></label>
+                                <select asp-for="Role" class="form-control">
+                                    <option value="1">Ministry</option>
+                                    <option value="0">Student</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="Phone" class="control-label"></label>
+                                <input asp-for="Phone" class="form-control " />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="Address" class="control-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="BirthDay" class="control-label"></label>
+                                <input asp-for="BirthDay" class="form-control" />
+                                <span asp-validation-for="BirthDay" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label asp-for="Gender" class="control-label"></label>
+                                <select asp-for="Gender" class="form-control">
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                    <option value="0">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <input type="submit" value="Edit" class="btn btn-danger" />
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+
+                </div><!--/tab-pane-->
+
+            </div><!--/col-9-->
+        </div><!--/row-->
     </div>
 </div>
 

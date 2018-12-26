@@ -42,6 +42,7 @@ namespace ProjectManageStudent.Controllers
                 {
                     HttpContext.Session.SetString("currentLogin", existAccount.Email);
                     HttpContext.Session.SetString("currentLoginId", existAccount.Id.ToString());
+                    HttpContext.Session.SetString("currentLoginAva", existAccount.Avartar);
                     HttpContext.Session.SetString("currentLoginRole", existAccount.Role.ToString());
                     if (Url !=null)
                     {

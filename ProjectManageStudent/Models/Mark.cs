@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ProjectManageStudent.Models
 {
     using System.Collections;
+    using System.ComponentModel.DataAnnotations;
 
     public class Mark 
     {
@@ -21,7 +22,9 @@ namespace ProjectManageStudent.Models
         public int Id { get; set; }
         public int AccountId { get; set; }
         public int SubjectId { get; set; }
+        
         public float Theory { get; set; }
+        
         public float Practice { get; set; }
         public float Assignment { get; set; }
         public MarkStatus Status { get; set; }
@@ -32,8 +35,7 @@ namespace ProjectManageStudent.Models
         public Account Account { get; set; }
         [ForeignKey("SubjectId")]
         public Subject Subject { get; set; }
-
-      
+  
     }
     public enum MarkStatus {
         Pass = 1,

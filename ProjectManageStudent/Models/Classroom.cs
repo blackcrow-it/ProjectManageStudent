@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace ProjectManageStudent.Models
 {
     using System.Collections;
+    using System.ComponentModel.DataAnnotations;
 
     public class Classroom 
     {
@@ -15,6 +16,7 @@ namespace ProjectManageStudent.Models
             this.UpdatedAt = DateTime.Now;
         }
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
