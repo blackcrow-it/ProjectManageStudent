@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManageStudent.Models
 {
+    using Newtonsoft.Json;
     using System.Collections;
 
     public class Account 
@@ -28,15 +29,19 @@ namespace ProjectManageStudent.Models
         
         [EmailAddress]
         public string Email { get; set; }
+        [JsonIgnore]
         public string Password { get; set; }
+        [JsonIgnore]
         [NotMapped]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
         [Url]
         public string Avartar { get; set; }
+        [JsonIgnore]
         public string Salt { get; set; }
         
         public string FirstName { get; set; }
+        [JsonIgnore]
         public Role Role { get; set; }
         public genderStatus Gender { get; set; }
         [Required]
@@ -49,9 +54,12 @@ namespace ProjectManageStudent.Models
         public DateTime BirthDay { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
+        [JsonIgnore]
         public AccountStatus Status { get; set; }
+        [JsonIgnore]
         public List<Mark> Marks { get; set; }
         [ForeignKey("ClassroomId")]
+        [JsonIgnore]
         public Classroom Classroom { get; set; }
 
         public bool checkRole()
