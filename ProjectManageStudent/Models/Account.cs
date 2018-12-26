@@ -24,7 +24,7 @@ namespace ProjectManageStudent.Models
         }
         public int Id { get; set; }
         public int ClassroomId { get; set; }
-        [Required]
+        
         [EmailAddress]
         public string Email { get; set; }
         
@@ -35,14 +35,14 @@ namespace ProjectManageStudent.Models
         [Url]
         public string Avartar { get; set; }
         public string Salt { get; set; }
-        [Required]
+        
         public string FirstName { get; set; }
         public Role Role { get; set; }
-        [Required]
+        
         public string LastName { get; set; }
-        [Required]
+        
         public string Phone { get; set; }
-        [Required]
+        
         public string Address { get; set; }
         
         [DataType(DataType.Date)]

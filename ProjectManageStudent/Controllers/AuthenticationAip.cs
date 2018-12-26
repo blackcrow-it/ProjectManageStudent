@@ -46,7 +46,7 @@ namespace ProjectManageStudent.Controllers
                 return new JsonResult("Bad Request");
             }
             Response.StatusCode = (int)HttpStatusCode.NotFound;
-            return new JsonResult("Not Found");
+            return new JsonResult("NotFound");
         }
     }
 }
