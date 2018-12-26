@@ -23,7 +23,6 @@ namespace ProjectManageStudent.Models
         public DateTime UpdatedAt { get; set; }
         [JsonIgnore]
         public List<Account> Accounts { get; set; }
-
-       
+     
     }
 }

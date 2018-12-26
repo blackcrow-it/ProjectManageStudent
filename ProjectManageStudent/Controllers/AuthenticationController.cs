@@ -50,6 +50,7 @@ namespace ProjectManageStudent.Controllers
                     }
                     return Redirect("/accounts/Index");
                 }
+                TempData["ss"] = "*Sai tên đăng nhập và mật khẩu";
             }
          return View(account);
         }

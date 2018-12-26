@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 namespace ProjectManageStudent.Models
 {
     using System.Collections;
+    using System.ComponentModel.DataAnnotations;
 
-    public class Subject : IEnumerable
+    public class Subject
     {
         public Subject()
         {
@@ -16,15 +17,14 @@ namespace ProjectManageStudent.Models
 
         }
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public List<Mark> Marks { get; set; }
 
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
